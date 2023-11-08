@@ -7,6 +7,10 @@ def cosine_similarity(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
 
+def save_df_to_json(df, filename):
+    df.to_json(filename, orient='records')
+
+
 if __name__ == '__main__':
     """
     $ python cosine_similarity.py data.csv
@@ -16,4 +20,7 @@ if __name__ == '__main__':
     df['embedding'] = df['embedding'].apply(lambda x: eval(x))
     df = df.merge(df, how='cross')
     df['similarity'] = df.apply(lambda x: cosine_similarity(x['embedding_x'], x['embedding_y']), axis=1)
-    print(df[['filename_x', 'filename_y', 'similarity']])
+    df_result = df[['filename_x', 'filename_y', 'similarity']]
+    print(df_result)
+    save_df_to_json(df_result, 'similarity_result.json')
+    print('Saved to similarity_result.json')
