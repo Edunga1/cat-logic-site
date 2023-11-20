@@ -11,9 +11,6 @@ max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
 
 
 def read_docs(path):
-    """
-    max_length는 max_tokens에 맞춰서 대강 설정함. 정확하지 않음.
-    """
     files = glob.glob(path)
     df = pd.DataFrame([], columns=['filename', 'text'])
 
