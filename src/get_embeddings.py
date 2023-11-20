@@ -13,7 +13,7 @@ max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
 
 
 def read_docs(pattern):
-    files = glob.glob(pattern)
+    files = glob.glob(pattern, recursive=True)
     df = pd.DataFrame([], columns=['filename', 'text'])
 
     for file in files:
@@ -55,7 +55,7 @@ def get_embeddings(df):
 
 if __name__ == '__main__':
     """
-    $ python get_embeddings.py "../docs/wiki/*.md"
+    $ python get_embeddings.py "../docs/wiki/**/*.md"
     """
     df = read_docs(sys.argv[1])
     df = update_by_token(df)
