@@ -13,7 +13,7 @@ def save_df_to_json(df, filename):
 
 if __name__ == '__main__':
     """
-    $ python cosine_similarity.py data.csv
+    $ python src/cosine_similarity.py data.csv
     """
     df = pd.read_csv(sys.argv[1])
     df = df[['filename', 'embedding']]

@@ -55,7 +55,7 @@ def get_embeddings(df):
 
 if __name__ == '__main__':
     """
-    $ python get_embeddings.py "../docs/wiki/**/*.md"
+    $ python src/get_embeddings.py "../docs/wiki/**/*.md"
     """
     df = read_docs(sys.argv[1])
     df = update_by_token(df)
