@@ -1,2 +1,5 @@
+# python
+.python-version
+
 # embedding output
 *.csv
