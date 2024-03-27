@@ -7,7 +7,7 @@ import tiktoken
 from openai.embeddings_utils import get_embedding
 
 # ref. https://cookbook.openai.com/examples/get_embeddings_from_dataset
-embedding_model = 'text-embedding-ada-002'
+embedding_model = 'text-embedding-3-small'
 embedding_encoding = 'cl100k_base'  # this the encoding for text-embedding-ada-002
 max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
 
