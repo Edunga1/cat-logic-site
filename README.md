@@ -22,3 +22,10 @@ $ python src/cosine_similarity.py output_embeddings.csv
 
 this will generate `similarity_result.json`.
 json file contains _doc1 - doc2 - similarity score_ pairs.
+
+## with Docker
+
+```bash
+$ cp -r ../docs/wiki target
+$ docker run --rm -t -i -v `pwd`:/app -e OPENAI_API_KEY=<KEY> embedding
+```
