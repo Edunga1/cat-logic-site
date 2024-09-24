@@ -28,6 +28,6 @@ json file contains _doc1 - doc2 - similarity score_ pairs.
 ```bash
 cp -r ../docs/wiki target
 export OPENAI_API_KEY=<KEY>
-docker run --rm -t -i -v `pwd`:/app -e OPENAI_API_KEY=$OPENAI_API_KEY embedding python src/get_embeddings.py target/**/*.md
+docker run --rm -t -i -v `pwd`:/app -e OPENAI_API_KEY=$OPENAI_API_KEY embedding python src/get_embeddings.py "target/**/*.md"
 docker run --rm -t -i -v `pwd`:/app embedding python src/cosine_similarity.py output_embeddings.csv
 ```
