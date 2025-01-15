@@ -1,14 +1,18 @@
 import glob
 import hashlib
+import os
 import sys
+from time import sleep
 
 import pandas as pd
+from phi.embedder.azure_openai import AzureOpenAIEmbedder
 import tiktoken
-from openai.embeddings_utils import get_embedding
 
 # ref. https://cookbook.openai.com/examples/get_embeddings_from_dataset
-embedding_model = 'text-embedding-3-small'
+embedding_base_url = 'https://models.inference.ai.azure.com'
+embedding_model = 'text-embedding-3-large'
 embedding_encoding = 'cl100k_base'  # this the encoding for text-embedding-ada-002
+azure_api_key = os.getenv('AZURE_OPENAI_API_KEY')
 max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
 
 
@@ -42,9 +46,16 @@ def update_by_token(df):
 
 def get_embeddings(df):
     df = df.copy()
+    embedder = AzureOpenAIEmbedder(
+        azure_endpoint=embedding_base_url,
+        model=embedding_model,
+        api_key=azure_api_key,
+    )
+
     def process(x):
         try:
-            embedding = get_embedding(x, engine=embedding_model)
+            embedding = embedder.get_embedding(x)
+            sleep(5)  # to avoid rate limiting. based on GitHub Models Free Tier
         except Exception as e:
             print(e)
             embedding = None

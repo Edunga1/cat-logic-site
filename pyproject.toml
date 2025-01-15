@@ -1,16 +1,12 @@
-[tool.poetry]
+[project]
 name = "embeddings"
 version = "0.1.0"
 description = ""
-authors = []
-
-[tool.poetry.dependencies]
-python = "~3.10"
-pandas = "^2.1.2"
-openai = {extras = ["embeddings"], version = "^0.28.1"}
-tiktoken = "^0.5.1"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+readme = "README.md"
+requires-python = ">=3.10.0"
+dependencies = [
+    "openai>=1.59.7",
+    "pandas>=2.2.3",
+    "phidata>=2.7.7",
+    "tiktoken>=0.8.0",
+]
