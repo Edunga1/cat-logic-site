@@ -9,7 +9,7 @@ To get the similiarity result between documents, there are two steps.
 1. Embed the documents
 
 ```bash
-$ OPENAI_API_KEY=your-openai-api-key python src/get_embeddings.py "../docs/wiki/**/*.md"
+$ AZURE_OPENAI_API_KEY=your-api-key python src/get_embeddings.py "../docs/wiki/**/*.md"
 ```
 
 this will generate `output_embeddings.csv` that contains the embeddings of the documents.
@@ -25,9 +25,15 @@ json file contains _doc1 - doc2 - similarity score_ pairs.
 
 ## with Docker
 
+Build the image:
+
+```bash
+docker build -t embeddings .
+```
+
 ```bash
 cp -r ../docs/wiki target
-export OPENAI_API_KEY=<KEY>
-docker run --rm -t -i -v `pwd`:/app -e OPENAI_API_KEY=$OPENAI_API_KEY embedding python src/get_embeddings.py "target/**/*.md"
-docker run --rm -t -i -v `pwd`:/app embedding python src/cosine_similarity.py output_embeddings.csv
+export AZURE_OPENAI_API_KEY=your-api-key
+docker run --rm -t -i -v `pwd`:/app -e AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KEY embeddings uv run src/get_embeddings.py "target/**/*.md"
+docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py output_embeddings.csv
 ```

@@ -2,8 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml uv.lock ./
 
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install --only main --no-root --no-directory
+RUN pip install uv
+RUN uv sync --frozen
