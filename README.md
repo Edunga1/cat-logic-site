@@ -31,9 +31,17 @@ Build the image:
 docker build -t embeddings .
 ```
 
+Get the embeddings and calculate the similarity:
+
 ```bash
 cp -r ../docs/wiki target
 export AZURE_OPENAI_API_KEY=your-api-key
 docker run --rm -t -i -v `pwd`:/app -e AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KEY embeddings uv run src/get_embeddings.py "target/**/*.md"
+docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py output_embeddings.csv
+```
+
+Convert the similarity result to:
+
+```bash
 docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py output_embeddings.csv
 ```
