@@ -1,12 +1,13 @@
-import glob
 import hashlib
 import os
+import pathlib
 import sys
 from time import sleep
 
 import pandas as pd
 from phi.embedder.azure_openai import AzureOpenAIEmbedder
 import tiktoken
+
 
 # ref. https://cookbook.openai.com/examples/get_embeddings_from_dataset
 embedding_base_url = 'https://models.inference.ai.azure.com'
@@ -16,8 +17,8 @@ azure_api_key = os.getenv('AZURE_OPENAI_API_KEY')
 max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
 
 
-def read_docs(pattern):
-    files = glob.glob(pattern, recursive=True)
+def read_docs(directory):
+    files = pathlib.Path(directory).rglob('*.md')
     df = pd.DataFrame([], columns=['filename', 'text'])
 
     for file in files:
@@ -25,7 +26,7 @@ def read_docs(pattern):
             text = f.read()
             checksum = hashlib.sha1(text.encode()).hexdigest()
             df_file = pd.DataFrame(
-                [[file, text, checksum]],
+                [[file.relative_to(directory), text, checksum]],
                 columns=[ 'filename', 'text', 'checksum'],
             )
             df = pd.concat([df, df_file])
@@ -66,7 +67,7 @@ def get_embeddings(df):
 
 if __name__ == '__main__':
     """
-    $ python src/get_embeddings.py "../docs/wiki/**/*.md"
+    $ python src/get_embeddings.py ../docs/wiki
     """
     df = read_docs(sys.argv[1])
     df = update_by_token(df)
