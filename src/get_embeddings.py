@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import os
 import pathlib
 import sys
@@ -7,6 +8,9 @@ from time import sleep
 import pandas as pd
 from phi.embedder.azure_openai import AzureOpenAIEmbedder
 import tiktoken
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 # ref. https://cookbook.openai.com/examples/get_embeddings_from_dataset
