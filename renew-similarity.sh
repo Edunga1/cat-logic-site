@@ -10,4 +10,4 @@ docker run --rm -t -i -v `pwd`:/app -e AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KE
 
 docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py output_embeddings.csv
 
-cp similarity_result.json ../sites/src/related-docs/similarity-result.json
+cp similarity-result.json ../sites/src/related-docs/similarity-result.json

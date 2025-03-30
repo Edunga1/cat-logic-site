@@ -23,4 +23,4 @@ if __name__ == '__main__':
     df_result = df[['filename_x', 'filename_y', 'similarity']]
     print(df_result)
     save_df_to_json(df_result, 'similarity_result.json')
-    print('Saved to similarity_result.json')
+    print('Saved to similarity-result.json')
