@@ -1,14 +1,15 @@
 import hashlib
+import json
 import logging
 import os
 import pathlib
+import sqlite3
 import sys
 from time import sleep
 
 import pandas as pd
-from phi.embedder.azure_openai import AzureOpenAIEmbedder
 import tiktoken
-
+from phi.embedder.azure_openai import AzureOpenAIEmbedder
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -30,14 +31,14 @@ def read_docs(directory):
             text = f.read()
             checksum = hashlib.sha1(text.encode()).hexdigest()
             df_file = pd.DataFrame(
-                [[file.relative_to(directory), text, checksum]],
-                columns=[ 'filename', 'text', 'checksum'],
+                [[str(file.relative_to(directory)), text, checksum]],
+                columns=['filename', 'text', 'checksum'],
             )
             df = pd.concat([df, df_file])
     return df
 
 
-def update_by_token(df):
+def update_token(df):
     df = df.copy()
     encoding = tiktoken.get_encoding(embedding_encoding)
     df['tokens'] = df['text'].apply(lambda x: encoding.encode(x))
@@ -46,6 +47,8 @@ def update_by_token(df):
         lambda x: encoding.decode(x[:max_tokens]))
     df['truncated_n_tokens'] = df['truncated_text'].apply(
         lambda x: len(encoding.encode(x)))
+    # convert tokens to string to persist
+    df['tokens'] = df['tokens'].apply(lambda x: str(x))
     return df
 
 
@@ -69,15 +72,30 @@ def get_embeddings(df):
     return df
 
 
+def save_sqlite(df, filename):
+    conn = sqlite3.connect(filename)
+    df.to_sql('docs', conn, if_exists='replace', index=False)
+
+
+def persit_embeddings(df, filename):
+    df.to_csv(f'{filename}.csv')
+
+    # TODO: Raise an error on objec types
+    df['embedding'] = df['embedding'].apply(lambda x: json.dumps(x) if x else None)
+    save_sqlite(df, f'{filename}.db')
+
+
 if __name__ == '__main__':
     """
     $ python src/get_embeddings.py ../docs/wiki
     """
     df = read_docs(sys.argv[1])
-    df = update_by_token(df)
+    df = update_token(df)
 
     # this calls the OpenAI API. May be charged.
     df = get_embeddings(df)
-    df.to_csv('output_embeddings.csv')
+
+    persit_embeddings(df, 'output_embeddings')
 
     print(df)
+    print(df.dtypes)
