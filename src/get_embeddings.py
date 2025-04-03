@@ -77,7 +77,7 @@ def save_sqlite(df, filename):
     df.to_sql('docs', conn, if_exists='replace', index=False)
 
 
-def persit_embeddings(df, filename):
+def persist_embeddings(df, filename):
     df.to_csv(f'{filename}.csv')
 
     # TODO: Raise an error on objec types
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     # this calls the OpenAI API. May be charged.
     df = get_embeddings(df)
 
-    persit_embeddings(df, 'output_embeddings')
+    persist_embeddings(df, 'output_embeddings')
 
     print(df)
     print(df.dtypes)
