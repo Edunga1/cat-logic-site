@@ -22,5 +22,5 @@ if __name__ == '__main__':
     df['similarity'] = df.apply(lambda x: cosine_similarity(x['embedding_x'], x['embedding_y']), axis=1)
     df_result = df[['filename_x', 'filename_y', 'similarity']]
     print(df_result)
-    save_df_to_json(df_result, 'similarity_result.json')
+    save_df_to_json(df_result, 'similarity-result.json')
     print('Saved to similarity-result.json')
