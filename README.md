@@ -36,10 +36,10 @@ Get the embeddings and calculate the similarity:
 ```bash
 cp -r ../docs/wiki target
 export AZURE_OPENAI_API_KEY=your-api-key
-docker run --rm -t -i -v `pwd`:/app -e AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KEY embeddings uv run src/get_embeddings.py "target/**/*.md"
+docker run --rm -t -i -v `pwd`:/app -e AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KEY embeddings uv run src/get_embeddings.py target
 ```
 
-Convert the embeddings to similarity result. this will generate `similarity_result.json`.:
+Convert the embeddings to similarity result. this will generate `similarity-result.json`.:
 
 ```bash
 docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py output_embeddings.csv
