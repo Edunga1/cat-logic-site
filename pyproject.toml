@@ -10,3 +10,8 @@ dependencies = [
     "phidata>=2.7.7",
     "tiktoken>=0.8.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pandas-stubs>=2.2.3.250308",
+]
