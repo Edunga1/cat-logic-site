@@ -91,20 +91,52 @@ def persist_embeddings(df, filename):
   save_sqlite(df, f'{filename}.db')
 
 
+def get_updated_docs(df, df_docs):
+  # merge the two dataframes on the filename
+  df_merged = pd.merge(df, df_docs, on='filename', suffixes=('_old', '_new'))
+
+  # check if the checksum is different
+  df_updated = df_merged[(df_merged['checksum_old'] != df_merged['checksum_new']) | df_merged['embedding'].isnull()]
+
+  # get the updated documents
+  updated_docs = df_updated[['filename', 'text_new', 'checksum_new']]
+  updated_docs.columns = ['filename', 'text', 'checksum']
+  return updated_docs.reset_index(drop=True)
+
+
+def merge_docs(df, df_updated_docs):
+    result_df = df.copy()
+
+    # filename을 인덱스로 설정
+    result_df_indexed = result_df.set_index('filename')
+    df_updates_indexed = df_updated_docs.set_index('filename')
+
+    # 업데이트할 열 선택
+    columns_to_update = ['text', 'checksum', 'embedding']
+
+    # 선택된 열만 업데이트
+    result_df_indexed.update(df_updates_indexed[columns_to_update])
+
+    # 인덱스 재설정
+    return result_df_indexed.reset_index()
+
+
 if __name__ == '__main__':
   """
   $ python src/get_embeddings.py ../docs/wiki
   """
-  # TODO: Implement loading from SQLite
-  # db_file = sys.argv[2] if len(sys.argv) > 2 else 'output_embeddings.db'
-  # df = load_embeddings(db_file)
-  df = read_docs(sys.argv[1])
-  df = update_token(df)
+  db_file = sys.argv[2] if len(sys.argv) > 2 else 'output_embeddings.db'
+  df = load_embeddings(db_file)
+  df_docs = read_docs(sys.argv[1])
 
-  # this calls the OpenAI API. May be charged.
-  df = get_embeddings(df)
+  df_updated_docs = get_updated_docs(df, df_docs)
+  df_updated_docs = update_token(df_updated_docs)
 
+  logging.info(f'Updated docs: {df_updated_docs.shape[0]}')
+  df_updated_docs = get_embeddings(df_updated_docs)
+
+  df = merge_docs(df, df_updated_docs)
   persist_embeddings(df, 'output_embeddings')
 
-  print(df)
-  print(df.dtypes)
+  logging.info(df)
+  logging.info(df.dtypes)
