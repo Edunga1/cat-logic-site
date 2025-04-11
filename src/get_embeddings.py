@@ -93,7 +93,7 @@ def persist_embeddings(df, filename):
 
 def get_updated_docs(df, df_docs):
   # merge the two dataframes on the filename
-  df_merged = pd.merge(df, df_docs, on='filename', suffixes=('_old', '_new'))
+  df_merged = pd.merge(df, df_docs, on='filename', how='right', suffixes=('_old', '_new'))
 
   # check if the checksum is different
   df_updated = df_merged[(df_merged['checksum_old'] != df_merged['checksum_new']) | df_merged['embedding'].isnull()]
@@ -105,6 +105,7 @@ def get_updated_docs(df, df_docs):
 
 
 def merge_docs(df, df_updated_docs):
+  # TODO: Fix this to add the new documents to the existing dataframe
   result_df = df.copy()
 
   result_df_indexed = result_df.set_index('filename')
