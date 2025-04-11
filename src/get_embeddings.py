@@ -105,20 +105,15 @@ def get_updated_docs(df, df_docs):
 
 
 def merge_docs(df, df_updated_docs):
-    result_df = df.copy()
+  result_df = df.copy()
 
-    # filename을 인덱스로 설정
-    result_df_indexed = result_df.set_index('filename')
-    df_updates_indexed = df_updated_docs.set_index('filename')
+  result_df_indexed = result_df.set_index('filename')
+  df_updates_indexed = df_updated_docs.set_index('filename')
 
-    # 업데이트할 열 선택
-    columns_to_update = ['text', 'checksum', 'embedding']
+  columns_to_update = ['text', 'checksum', 'embedding']
+  result_df_indexed.update(df_updates_indexed[columns_to_update])
 
-    # 선택된 열만 업데이트
-    result_df_indexed.update(df_updates_indexed[columns_to_update])
-
-    # 인덱스 재설정
-    return result_df_indexed.reset_index()
+  return result_df_indexed.reset_index()
 
 
 if __name__ == '__main__':
