@@ -20,7 +20,7 @@ this will generate `output_embeddings.csv` that contains the embeddings of the d
 $ python src/cosine_similarity.py output_embeddings.csv
 ```
 
-this will generate `similarity_result.json`.
+this will generate `similarity-result.json`.
 json file contains _doc1 - doc2 - similarity score_ pairs.
 
 ## with Docker
@@ -48,5 +48,5 @@ docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py o
 Copy similarity result to my site:
 
 ```bash
-cp similarity_result.json ../sites/src/related-docs/similarity-result.json
+cp similarity-result.json ../sites/src/related-docs/similarity-result.json
 ```
