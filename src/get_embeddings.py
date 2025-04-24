@@ -11,8 +11,8 @@ import pandas as pd
 import tiktoken
 from phi.embedder.azure_openai import AzureOpenAIEmbedder
 
-logging.basicConfig(level=logging.DEBUG)
 
+logging.basicConfig(level=logging.INFO)
 
 # ref. https://cookbook.openai.com/examples/get_embeddings_from_dataset
 embedding_base_url = 'https://models.inference.ai.azure.com'
@@ -91,30 +91,28 @@ def persist_embeddings(df, filename):
   save_sqlite(df, f'{filename}.db')
 
 
-def get_updated_docs(df, df_docs):
+def get_updated_docs(old, new):
   # merge the two dataframes on the filename
-  df_merged = pd.merge(df, df_docs, on='filename', how='right', suffixes=('_old', '_new'))
+  temp = pd.merge(old, new, on='filename', how='right', suffixes=('_old', '_new'))
 
   # check if the checksum is different
-  df_updated = df_merged[(df_merged['checksum_old'] != df_merged['checksum_new']) | df_merged['embedding'].isnull()]
+  updated = temp[(temp['checksum_old'] != temp['checksum_new']) | temp['embedding'].isnull()]
 
   # get the updated documents
-  updated_docs = df_updated[['filename', 'text_new', 'checksum_new']]
-  updated_docs.columns = ['filename', 'text', 'checksum']
-  return updated_docs.reset_index(drop=True)
+  result = updated[['filename', 'text_new', 'checksum_new']]
+  result.columns = ['filename', 'text', 'checksum']
+  return result.reset_index(drop=True)
 
 
-def merge_docs(df, df_updated_docs):
-  # TODO: Fix this to add the new documents to the existing dataframe
-  result_df = df.copy()
+def merge_docs(old, new):
+  old_indexed = old.set_index('filename')
+  new_indexed = new.set_index('filename')
 
-  result_df_indexed = result_df.set_index('filename')
-  df_updates_indexed = df_updated_docs.set_index('filename')
+  old_indexed.update(new_indexed)
+  result = pd.concat([old_indexed, new_indexed])
+  result = result[~result.index.duplicated(keep='last')]
 
-  columns_to_update = ['text', 'checksum', 'embedding']
-  result_df_indexed.update(df_updates_indexed[columns_to_update])
-
-  return result_df_indexed.reset_index()
+  return result.reset_index()
 
 
 if __name__ == '__main__':
@@ -130,6 +128,10 @@ if __name__ == '__main__':
 
   logging.info(f'Updated docs: {df_updated_docs.shape[0]}')
   df_updated_docs = get_embeddings(df_updated_docs)
+
+  if df_updated_docs.shape[0] == 0:
+    logging.info('No updated documents found.')
+    sys.exit(0)
 
   df = merge_docs(df, df_updated_docs)
   persist_embeddings(df, 'output_embeddings')
