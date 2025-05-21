@@ -2,6 +2,7 @@ import hashlib
 import json
 import logging
 import os
+import ast
 import pathlib
 import sqlite3
 import sys
@@ -80,13 +81,14 @@ def save_sqlite(df, filename):
 def load_embeddings(filename):
   conn = sqlite3.connect(filename)
   df = pd.read_sql('SELECT * FROM docs', conn)
+  df['embedding'] = df['embedding'].apply(ast.literal_eval)
   return df
 
 
 def persist_embeddings(df, filename):
   df.to_csv(f'{filename}.csv')
 
-  # TODO: Raise an error on objec types
+  # TODO: Raise an error on object types
   df['embedding'] = df['embedding'].apply(lambda x: json.dumps(x) if x else None)
   save_sqlite(df, f'{filename}.db')
 
