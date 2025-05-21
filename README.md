@@ -9,7 +9,8 @@ To get the similiarity result between documents, there are two steps.
 1. Embed the documents
 
 ```bash
-$ AZURE_OPENAI_API_KEY=your-api-key python src/get_embeddings.py "../docs/wiki/**/*.md"
+cp -r ../docs/wiki target
+$ AZURE_OPENAI_API_KEY=your-api-key uv run src/get_embeddings.py target
 ```
 
 this will generate `output_embeddings.csv` that contains the embeddings of the documents.
@@ -17,7 +18,7 @@ this will generate `output_embeddings.csv` that contains the embeddings of the d
 2. Calculate the similarity
 
 ```bash
-$ python src/cosine_similarity.py output_embeddings.csv
+$ uv run src/cosine_similarity.py output_embeddings.csv
 ```
 
 this will generate `similarity-result.json`.
