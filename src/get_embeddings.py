@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 embedding_base_url = 'https://models.inference.ai.azure.com'
 embedding_model = 'text-embedding-3-large'
 embedding_encoding = 'cl100k_base'  # this the encoding for text-embedding-ada-002
-azure_api_key = os.getenv('AZURE_OPENAI_API_KEY')
+azure_api_key = os.environ['AZURE_OPENAI_API_KEY']
 max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
 
 
