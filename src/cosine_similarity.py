@@ -8,7 +8,7 @@ def cosine_similarity(a, b):
 
 
 def save_df_to_json(df, filename):
-  df.to_json(filename, orient='records')
+  df.to_json(filename, orient='records', force_ascii=False)
 
 
 if __name__ == '__main__':
