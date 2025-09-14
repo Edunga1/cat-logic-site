@@ -1,0 +1,59 @@
+{
+  "name": "cat-logic",
+  "version": "1.0.0",
+  "private": true,
+  "description": "cat-logic",
+  "author": "edunga1",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby clean && gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build --prefix-paths",
+    "serve": "gatsby serve --prefix-paths",
+    "clean": "gatsby clean",
+    "typecheck": "tsc --noEmit",
+    "publish": "npm build && gh-pages -d public",
+    "test": "node --import tsx --test src/**/*.spec.ts",
+    "lint": "eslint 'src/**/*.{ts,tsx}'"
+  },
+  "dependencies": {
+    "babel-plugin-styled-components": "^2.1.4",
+    "gatsby": "^5.15.0",
+    "gatsby-plugin-catch-links": "^5.13.0",
+    "gatsby-plugin-fusejs": "^2.0.2",
+    "gatsby-plugin-google-gtag": "^5.13.1",
+    "gatsby-plugin-manifest": "^5.13.1",
+    "gatsby-plugin-robots-txt": "^1.8.0",
+    "gatsby-plugin-sharp": "^5.13.0",
+    "gatsby-plugin-sitemap": "^6.13.0",
+    "gatsby-plugin-styled-components": "^6.13.0",
+    "gatsby-remark-autolink-headers": "^6.13.0",
+    "gatsby-remark-copy-linked-files": "^6.13.0",
+    "gatsby-remark-images": "^7.13.0",
+    "gatsby-remark-prismjs": "^7.13.0",
+    "gatsby-remark-relative-linker": "github:edunga1/gatsby-remark-relative-linker",
+    "gatsby-source-filesystem": "^5.13.0",
+    "gatsby-transformer-gitinfo": "github:edunga1/gatsby-transformer-gitinfo#v2.0.0",
+    "gatsby-transformer-remark": "^6.13.0",
+    "gh-pages": "^5.0.0",
+    "prismjs": "^1.30.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-use-fusejs": "^2.0.2",
+    "styled-components": "^5.3.11"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.8",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@types/styled-components": "^5.1.34",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "tsx": "^4.19.3",
+    "typescript": "^4.9.5"
+  }
+}
