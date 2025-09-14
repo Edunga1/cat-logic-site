@@ -16,7 +16,7 @@ const config: GatsbyConfig = {
       options: {
         name: "content",
         // Path to the directory where the markdown files to be published are located
-        path: path.join(__dirname, "docs", "wiki"),
+        path: process.env.GATSBY_CONTENT_PATH || path.join(__dirname, "docs", "wiki"),
       },
     },
     "gatsby-transformer-gitinfo",
