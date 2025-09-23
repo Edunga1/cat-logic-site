@@ -32,7 +32,12 @@ const config: GatsbyConfig = {
             },
           },
           "gatsby-remark-autolink-headers",
-          "gatsby-remark-copy-linked-files",
+          {
+            resolve: "gatsby-remark-copy-linked-files",
+            options: {
+              ignoreFileExtensions: ["md"],
+            },
+          },
           "gatsby-remark-relative-linker",
           "gatsby-remark-prismjs",
         ],
