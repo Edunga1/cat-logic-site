@@ -45,9 +45,3 @@ Convert the embeddings to similarity result. this will generate `similarity-resu
 ```bash
 docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py output_embeddings.csv
 ```
-
-Copy similarity result to my site:
-
-```bash
-cp similarity-result.json ../sites/src/related-docs/similarity-result.json
-```
