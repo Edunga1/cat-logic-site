@@ -5,6 +5,7 @@ import theme from "../../constants/theme"
 const Container = styled.div`
   overflow: auto;
   overflow-wrap: break-word;
+  background-color: #fff;
   color: ${theme.colors.foreground};
   padding: 1.5rem;
   margin-top: 1rem;

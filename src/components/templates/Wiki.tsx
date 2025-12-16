@@ -11,8 +11,21 @@ import RelatedLinks from "../molecules/RelatedLinks"
 import GitHubCommitLink from "../organisms/GitHubCommitLink"
 import PageLayout from "./layout/PageLayout"
 
+const backgroundPattern =
+  "data:image/svg+xml,%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%2240%22%20y2%3D%2240%22%20stroke%3D%22%23c4b07a%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%224%206%22%20stroke-linecap%3D%22round%22/%3E%3Cline%20x1%3D%2240%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%2240%22%20stroke%3D%22%23c4b07a%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%224%206%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%221.5%22%20fill%3D%22%23c4b07a%22/%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%220%22%20r%3D%221.5%22%20fill%3D%22%23c4b07a%22/%3E%3Ccircle%20cx%3D%220%22%20cy%3D%2240%22%20r%3D%221.5%22%20fill%3D%22%23c4b07a%22/%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2240%22%20r%3D%221.5%22%20fill%3D%22%23c4b07a%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%221.5%22%20fill%3D%22%23c4b07a%22/%3E%3C/svg%3E"
+
 const Main = styled.div`
   overflow: auto;
+
+  ::before {
+    content: "";
+    background-image: url("${backgroundPattern}");
+    background-color: ${theme.colors.background};
+    opacity: 0.2;
+    inset: 0;
+    position: fixed;
+    z-index: -1;
+  }
 `
 
 const TitleContainer = styled.div`
