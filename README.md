@@ -12,8 +12,7 @@ any code outside of `src/` is all about gatsbyjs or build tools.
 
 ```bash
 ├── src
-│   ├── components                      # atomic components but gatsby-templates may not
-│   │   may atoms
+│   ├── components                      # atomic components but gatsby-templates may not be atomic
 │   │   ├── gatsby-templates
 │   │   │   └── Wiki.tsx                # contains query for wiki page
 │   │   ├── molecules
