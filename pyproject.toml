@@ -8,6 +8,7 @@ dependencies = [
     "openai>=1.59.7",
     "pandas>=2.2.3",
     "phidata>=2.7.7",
+    "streamlit>=1.53.0",
     "tiktoken>=0.8.0",
 ]
 

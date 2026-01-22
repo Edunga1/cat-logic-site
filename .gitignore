@@ -1,5 +1,6 @@
 # python
 .python-version
+__pycache__/
 
 # embedding output
 *.csv

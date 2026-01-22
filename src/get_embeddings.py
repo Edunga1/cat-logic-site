@@ -19,8 +19,11 @@ logging.basicConfig(level=logging.INFO)
 embedding_base_url = 'https://models.inference.ai.azure.com'
 embedding_model = 'text-embedding-3-large'
 embedding_encoding = 'cl100k_base'  # this the encoding for text-embedding-ada-002
-azure_api_key = os.environ['AZURE_OPENAI_API_KEY']
 max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
+
+
+def get_azure_api_key():
+  return os.environ['AZURE_OPENAI_API_KEY']
 
 
 def read_docs(directory):
@@ -58,7 +61,7 @@ def get_embeddings(df):
   embedder = AzureOpenAIEmbedder(
     azure_endpoint=embedding_base_url,
     model=embedding_model,
-    api_key=azure_api_key,
+    api_key=get_azure_api_key(),
   )
 
   def process(x):
