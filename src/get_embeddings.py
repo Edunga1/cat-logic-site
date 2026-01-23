@@ -120,13 +120,17 @@ def merge_docs(old, new):
   return result.reset_index()
 
 
-if __name__ == '__main__':
+def main(docs_path, db_file='output_embeddings.db', output_file='output_embeddings'):
   """
-  $ python src/get_embeddings.py ../docs/wiki
+  메인 함수: 문서를 읽고 embedding을 생성하여 DB에 저장
+
+  Args:
+    docs_path: 문서 디렉토리 경로
+    db_file: 기존 embedding DB 파일 경로
+    output_file: 출력 파일 경로 (확장자 제외)
   """
-  db_file = sys.argv[2] if len(sys.argv) > 2 else 'output_embeddings.db'
   df = load_embeddings(db_file)
-  df_docs = read_docs(sys.argv[1])
+  df_docs = read_docs(docs_path)
 
   df_updated_docs = get_updated_docs(df, df_docs)
   df_updated_docs = update_token(df_updated_docs)
@@ -136,10 +140,19 @@ if __name__ == '__main__':
 
   if df_updated_docs.shape[0] == 0:
     logging.info('No updated documents found.')
-    sys.exit(0)
+    return
 
   df = merge_docs(df, df_updated_docs)
-  persist_embeddings(df, 'output_embeddings')
+  persist_embeddings(df, output_file)
 
   logging.info(df)
   logging.info(df.dtypes)
+
+
+if __name__ == '__main__':
+  """
+  $ python src/get_embeddings.py ../docs/wiki
+  """
+  docs_path = sys.argv[1]
+  db_file = sys.argv[2] if len(sys.argv) > 2 else 'output_embeddings.db'
+  main(docs_path, db_file)
