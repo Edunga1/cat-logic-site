@@ -72,9 +72,11 @@ const Container = styled.div`
 
   // quote style
   blockquote {
-    border-left: 4px solid #ddd;
-    padding-left: 1rem;
-    margin-left: 0;
+    border-left: 4px solid ${theme.colors.lowlight};
+    background-color: ${theme.colors.background};
+    padding: 1rem 1rem 1rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 0 .5rem .5rem 0;
     font-style: italic;
   }
 
