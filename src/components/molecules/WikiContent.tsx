@@ -30,6 +30,15 @@ const Container = styled.div`
     line-height: 1.6;
   }
 
+  // list style
+  ul, ol {
+    line-height: 1.6;
+
+    li {
+      margin: 0.3rem 0;
+    }
+  }
+
   // link style
   a {
     &:link {
