@@ -6,6 +6,7 @@ import Link from "../atoms/Link"
 const Container = styled.div`
   font-size: 1.5rem;
   text-align: right;
+  user-select: none;
 
   a {
     color: ${theme.colors.foreground};
