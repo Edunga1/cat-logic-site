@@ -88,12 +88,23 @@ export const createPages: GatsbyNode["createPages"] = async ({
 
 //- Helpers
 
-// TODO: heading 제외하도록 개선 필요
 function getHead(node: Node) {
   const content = node.internal.content ?? ""
   const regex = /^#[^#].*\n*(.+)/gm
   const matched = regex.exec(content)?.at(1) ?? ""
-  return matched.replace(/^[#\s]*/, "").trim()
+  const firstLine = matched.replace(/^[#\s]*/, "").trim()
+  return stripMarkdown(firstLine)
+}
+
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // [link](url) -> link
+    .replace(/`([^`]+)`/g, "$1")             // `code` -> code
+    .replace(/\*\*([^*]+)\*\*/g, "$1")       // **bold** -> bold
+    .replace(/__([^_]+)__/g, "$1")           // __bold__ -> bold
+    .replace(/\*([^*]+)\*/g, "$1")           // *italic* -> italic
+    .replace(/_([^_]+)_/g, "$1")             // _italic_ -> italic
+    .replace(/~~([^~]+)~~/g, "$1")           // ~~strike~~ -> strike
 }
 
 function parseRelatedDocs(node: Node) {
