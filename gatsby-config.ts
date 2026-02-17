@@ -39,6 +39,7 @@ const config: GatsbyConfig = {
             },
           },
           "gatsby-remark-relative-linker",
+          "gatsby-remark-youtube",
           "gatsby-remark-prismjs",
         ],
       },
