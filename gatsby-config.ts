@@ -2,6 +2,7 @@ import { GatsbyConfig } from "gatsby"
 import path from "path"
 
 const config: GatsbyConfig = {
+  trailingSlash: "never",
   pathPrefix: process.env.GATSBY_PATH_PREFIX || "/",
   siteMetadata: {
     title: "cat logic",
