@@ -7,15 +7,16 @@ const Container = styled.div`
   overflow-wrap: break-word;
   background-color: #fff;
   color: ${theme.colors.foreground};
-  padding: 1.5rem;
+  padding: 2rem 2.5rem;
   margin-top: 1rem;
   border-radius: .5rem;
   border: 1px solid rgb(238, 238, 238);
   font-family: Arial, Helvetica, sans-serif;
+  max-width: 48rem;
 
   // heading style
   h1, h2, h3, h4, h5, h6 {
-    margin: 1.5rem 0 .8rem;
+    margin: 2rem 0 1rem;
     padding-bottom: 5px;
     border-bottom: 1px solid #eee;
   }
@@ -24,18 +25,27 @@ const Container = styled.div`
       margin-top: 5rem;
     }
   }
+  h3 {
+    margin-top: 3rem;
+    border-bottom: none;
+  }
+  h4, h5, h6 {
+    margin-top: 2rem;
+    border-bottom: none;
+  }
 
   // text style
   p {
-    line-height: 1.6;
+    line-height: 1.8;
+    margin: 1.2rem 0;
   }
 
   // list style
   ul, ol {
-    line-height: 1.6;
+    line-height: 1.8;
 
     li {
-      margin: 0.3rem 0;
+      margin: 0.4rem 0;
     }
   }
 
@@ -71,6 +81,7 @@ const Container = styled.div`
     background-color: #f5f5f5;
     border-radius: .5rem;
     padding: 1rem;
+    margin: 1.5rem 0;
     overflow: auto;
   }
 
@@ -84,7 +95,7 @@ const Container = styled.div`
     border-left: 4px solid ${theme.colors.lowlight};
     background-color: ${theme.colors.background};
     padding: 1rem 1rem 1rem 1.5rem;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     border-radius: 0 .5rem .5rem 0;
     font-style: italic;
   }
@@ -95,7 +106,7 @@ const Container = styled.div`
     border-collapse: collapse;
 
     td, th {
-      padding: .2rem .5rem;
+      padding: .5rem .75rem;
     }
 
     thead {
@@ -103,7 +114,7 @@ const Container = styled.div`
     }
 
     tbody {
-      font-size: .8rem;
+      font-size: .875rem;
 
       tr:nth-child(even) {
         background-color: ${theme.colors.background};
@@ -119,6 +130,7 @@ const Container = styled.div`
   hr {
     border: none;
     border-top: 1px dashed #aaa;
+    margin: 2.5rem 0;
   }
 `
 
