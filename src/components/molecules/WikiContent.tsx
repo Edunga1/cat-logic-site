@@ -12,7 +12,6 @@ const Container = styled.div`
   border-radius: .5rem;
   border: 1px solid rgb(238, 238, 238);
   font-family: Arial, Helvetica, sans-serif;
-  max-width: 48rem;
 
   // heading style
   h1, h2, h3, h4, h5, h6 {

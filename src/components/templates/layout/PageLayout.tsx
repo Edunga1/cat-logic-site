@@ -10,7 +10,7 @@ const Container = styled.div`
   padding-top: var(--height-offset);
 
   @media (${device.larger}) {
-    grid-template-columns: 0.3fr 3fr 1fr;
+    grid-template-columns: 0.3fr minmax(0, 48rem) minmax(14rem, 1fr);
   }
 `
 
