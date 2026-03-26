@@ -19,6 +19,10 @@ const Main = styled.div`
   grid-area: main;
   width: 100%;
   padding: 0 1rem;
+
+  &:only-child {
+    grid-column: 1 / -1;
+  }
 `
 
 const Side = styled.div`
