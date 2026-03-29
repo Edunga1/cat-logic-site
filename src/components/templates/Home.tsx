@@ -12,10 +12,14 @@ const Counter = styled.div`
 `
 
 const SearchBoxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  width: 75%;
   margin-bottom: 1rem;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
 
   > div > :first-child {
     margin-bottom: 0.5rem;
