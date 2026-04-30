@@ -2,16 +2,21 @@ import * as React from "react"
 import styled from "styled-components"
 import theme from "../../constants/theme"
 
-const Header = styled.h3`
-  margin: 0;
-  padding: 1rem 0 .5rem 1rem;
-  font-size: 1rem;
-  display: inline-block;
-`
-
 const Container = styled.div`
-  box-sizing: border-box;
-  padding: 0 1rem 1rem 0;
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.14), 0 1px 1px rgba(0, 0, 0, 0.24);
+  padding: 1rem;
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0 0 0.5rem;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
 
   ul {
     list-style: none;
@@ -46,6 +51,17 @@ const Container = styled.div`
   }
 `
 
+const Header = styled.h3`
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: ${theme.colors.foreground};
+  display: inline-block;
+`
+
 export default function Toc(
   {
     className,
@@ -56,13 +72,13 @@ export default function Toc(
   },
 ) {
   return (
-    <div className={className} >
+    <Container className={className}>
       <details open>
         <summary>
           <Header>Table of Contents</Header>
         </summary>
-        <Container dangerouslySetInnerHTML={{ __html: contents }} />
+        <div dangerouslySetInnerHTML={{ __html: contents }} />
       </details>
-    </div>
+    </Container>
   )
 }

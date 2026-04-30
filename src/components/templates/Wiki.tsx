@@ -50,11 +50,13 @@ const TocMain = styled(Toc)`
 `
 
 const TocSide = styled(Toc)`
-  margin-top: 1rem;
   max-width: 20rem;
+  margin-top: 1rem;
 `
 
-const RelatedLinksSide = styled(RelatedLinks)``
+const RelatedLinksSide = styled(RelatedLinks)`
+  max-width: 20rem;
+`
 
 export default function Wiki({
   title,

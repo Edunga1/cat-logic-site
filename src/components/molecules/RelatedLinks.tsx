@@ -3,32 +3,34 @@ import styled from "styled-components"
 import theme from "../../constants/theme"
 
 const Container = styled.div`
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.14), 0 1px 1px rgba(0, 0, 0, 0.24);
+  padding: 1rem;
 `
 
 const Header = styled.h3`
-  margin: 0;
-  padding: 1rem 0 .5rem 1rem;
-  font-size: 1rem;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: ${theme.colors.foreground};
 `
 
 const Links = styled.ul`
   list-style: none;
   padding-left: 1rem;
   margin: 0;
-  font-size: .8rem;
+  font-size: .875rem;
 
   > li {
-    padding: .1rem 0;
-    line-height: 1;
-    display: inline;
-
-    ::after {
-      content: " • ";
-    }
-
-    :last-child::after {
-      content: "";
-    }
+    margin-top: 6px;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     > a {
       &:link {

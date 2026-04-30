@@ -9,8 +9,4 @@ export default {
     background: "#F5F5F5",
     backgroundHighlight: "#D0D0D0",
   },
-  fonts: {
-    body: "-apple-system, Roboto, sans-serif, serif",
-    heading: "-apple-system, Roboto, sans-serif, serif",
-  }
 }

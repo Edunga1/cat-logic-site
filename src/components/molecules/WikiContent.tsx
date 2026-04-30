@@ -9,9 +9,8 @@ const Container = styled.div`
   color: ${theme.colors.foreground};
   padding: 2rem 2.5rem;
   margin-top: 1rem;
-  border-radius: .5rem;
-  border: 1px solid rgb(238, 238, 238);
-  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.14), 0 1px 1px rgba(0, 0, 0, 0.24);
 
   // heading style
   h1, h2, h3, h4, h5, h6 {
