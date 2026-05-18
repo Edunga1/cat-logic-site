@@ -1,5 +1,5 @@
 import * as React from "react"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import theme from "../../constants/theme"
 
 const Container = styled.div`
@@ -17,6 +17,13 @@ const Container = styled.div`
     margin: 2rem 0 1rem;
     padding-bottom: 5px;
     border-bottom: 1px solid #eee;
+
+    &:target {
+      animation: ${keyframes`
+        from { background-color: ${theme.colors.highlight}; }
+        to { background-color: transparent; }
+      `} 1s ease-out;
+    }
   }
   h2 {
     &:not(:first-of-type) {
