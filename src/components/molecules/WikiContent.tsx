@@ -82,12 +82,34 @@ const Container = styled.div`
 
   // code block style
   pre:has(code) {
+    position: relative;
     font-size: 85%;
     background-color: #f5f5f5;
     border-radius: .5rem;
-    padding: 1rem;
+    padding: 1rem 2.5rem 1rem 1rem;
     margin: 1.5rem 0;
     overflow: auto;
+    pointer-events: none;
+
+    code {
+      pointer-events: auto;
+    }
+
+    // copy button rendered as pseudo-element
+    &::after {
+      content: "⧉";
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    &[data-copied="true"]::after {
+      content: "✓";
+    }
   }
 
   // limits image size to prevent image overs container
@@ -139,10 +161,23 @@ const Container = styled.div`
   }
 `
 
+function handleCodeBlockClick(e: React.MouseEvent<HTMLDivElement>) {
+  const pre = e.target as HTMLElement
+  if (pre.tagName !== "PRE" || !pre.querySelector("code")) return
+
+  const code = pre.querySelector("code")?.textContent ?? ""
+  navigator.clipboard.writeText(code)
+  pre.setAttribute("data-copied", "true")
+  setTimeout(() => pre.removeAttribute("data-copied"), 2000)
+}
+
 export default function WikiContent(
   { contents }: { contents: string },
 ) {
   return (
-    <Container dangerouslySetInnerHTML={{ __html: contents }} />
+    <Container
+      onClick={handleCodeBlockClick}
+      dangerouslySetInnerHTML={{ __html: contents }}
+    />
   )
 }
