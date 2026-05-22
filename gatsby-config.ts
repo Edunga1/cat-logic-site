@@ -46,7 +46,12 @@ const config: GatsbyConfig = {
       },
     },
     "gatsby-plugin-styled-components",
-    "gatsby-plugin-catch-links",
+    {
+      resolve: "gatsby-plugin-catch-links",
+      options: {
+        excludePattern: /\.html$/,
+      },
+    },
     {
       resolve: "gatsby-plugin-fusejs",
       options: {
