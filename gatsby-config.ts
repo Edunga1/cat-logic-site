@@ -68,6 +68,7 @@ const config: GatsbyConfig = {
                     rawMarkdownBody
                     fields {
                       head
+                      slug
                     }
                   }
                 }
@@ -79,6 +80,7 @@ const config: GatsbyConfig = {
         normalizer: ({ data }: { data: Queries.Query }) =>
           data.allFile.edges.map(({ node }) => ({
             name: node.name,
+            slug: node.childMarkdownRemark?.fields?.slug,
             title: node.childMarkdownRemark?.headings?.[0]?.value,
             rawMarkdownBody: node.childMarkdownRemark?.rawMarkdownBody,
             head: node.childMarkdownRemark?.fields?.head,

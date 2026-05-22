@@ -67,14 +67,14 @@ export const pageQuery = graphql`
   }
 `
 interface SearchResult {
-  item: { name: string; title: string; head: string }
+  item: { name: string; slug: string; title: string; head: string }
   refIndex: number
 }
 
 function mapSearchResultToWikiItem(result: SearchResult[]): Wiki[] {
   return result
     .map(it => ({
-      path: createWikiLink(it.item.name),
+      path: createWikiLink(it.item.slug ?? it.item.name),
       title: it.item.title ?? "(Untitled)",
       head: it.item.head ?? "",
     }))
