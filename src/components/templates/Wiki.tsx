@@ -85,15 +85,20 @@ export default function Wiki({
   ) : null
 
   return (
-    <PageLayout>
+    <PageLayout
+      header={
+        <>
+          <TitleContainer>
+            <HomeLink />
+            <Link href=".">
+              <Title>{title}</Title>
+            </Link>
+          </TitleContainer>
+          <TitleBottom>{githubLink}</TitleBottom>
+        </>
+      }
+    >
       <Main>
-        <TitleContainer>
-          <HomeLink />
-          <Link href=".">
-            <Title>{title}</Title>
-          </Link>
-        </TitleContainer>
-        <TitleBottom>{githubLink}</TitleBottom>
         <TocMain contents={tableOfContents} />
         <WikiContent contents={wikiContents} />
         <Comments />

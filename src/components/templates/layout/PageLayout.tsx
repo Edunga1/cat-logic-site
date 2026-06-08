@@ -6,12 +6,19 @@ const Container = styled.div`
   --height-offset: 3rem;
 
   display: grid;
-  grid-template-areas: "margin main side";
+  grid-template-areas:
+    "margin header ."
+    "margin main   side";
   padding-top: var(--height-offset);
 
   @media (${device.larger}) {
     grid-template-columns: 0.3fr minmax(0, 48rem) minmax(14rem, 1fr);
   }
+`
+
+const Header = styled.div`
+  grid-area: header;
+  padding: 0 1rem;
 `
 
 const Main = styled.div`
@@ -50,8 +57,10 @@ const Margin = styled.div`
 `
 
 export default function PageLayout({
+  header,
   children,
 }: {
+  header?: React.ReactNode;
   children: React.ReactNode | React.ReactNode[];
 }) {
   const [main, side] = Array.isArray(children)
@@ -60,6 +69,7 @@ export default function PageLayout({
   return (
     <Container>
       {side && <Margin />}
+      {header && <Header>{header}</Header>}
       <Main>{main}</Main>
       {side && <Side>{side}</Side>}
     </Container>
