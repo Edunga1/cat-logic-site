@@ -25,7 +25,6 @@ const CatalogTable = styled.table`
     width: 40%;
     padding: 0.2rem 0;
     text-align: right;
-    font-weight: normal;
   }
 
   td {
