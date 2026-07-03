@@ -7,7 +7,7 @@ const Links = styled.ul`
   list-style: none;
   padding-left: 1rem;
   margin: 0;
-  font-size: .875rem;
+  font-size: 0.875rem;
 
   > li {
     margin-top: 6px;
@@ -34,18 +34,16 @@ const Links = styled.ul`
   }
 `
 
-export default function RelatedLinks(
-  {
-    className,
-    children,
-  }: {
-    className?: string,
-    children: JSX.Element[],
-  },
-) {
+export default function RelatedLinks({
+  className,
+  children,
+}: {
+  className?: string;
+  children: JSX.Element[];
+}) {
   return (
     <div className={className}>
-      {children.length > 0 &&
+      {children.length > 0 && (
         <Details>
           <>Related</>
           <Links>
@@ -54,7 +52,7 @@ export default function RelatedLinks(
             ))}
           </Links>
         </Details>
-      }
+      )}
     </div>
   )
 }
