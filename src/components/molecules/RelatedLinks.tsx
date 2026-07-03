@@ -1,23 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import theme from "../../constants/theme"
-
-const Container = styled.div`
-  background-color: #fff;
-  border-radius: 0.75rem;
-  box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.14), 0 1px 1px rgba(0, 0, 0, 0.24);
-  padding: 1rem;
-`
-
-const Header = styled.h3`
-  margin: 0 0 0.5rem;
-  padding: 0;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: ${theme.colors.foreground};
-`
+import Details from "../atoms/Details"
 
 const Links = styled.ul`
   list-style: none;
@@ -60,17 +44,17 @@ export default function RelatedLinks(
   },
 ) {
   return (
-    <>
+    <div className={className}>
       {children.length > 0 &&
-        <Container className={className}>
-          <Header>Related</Header>
+        <Details>
+          <>Related</>
           <Links>
             {children.map((child, index) => (
               <li key={index}>{child}</li>
             ))}
           </Links>
-        </Container>
+        </Details>
       }
-    </>
+    </div>
   )
 }
