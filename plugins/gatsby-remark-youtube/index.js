@@ -36,11 +36,13 @@ function extractYouTubeInfo(url) {
 
 module.exports = ({ markdownAST }) => {
   visit(markdownAST, "paragraph", (node, index, parent) => {
-    if (node.children.length !== 1 || node.children[0].type !== "link") {
+    const indexOfLink = node.children.findIndex((child) => child.type === "link")
+    const link = node.children[indexOfLink]
+
+    if (link == undefined) {
       return
     }
 
-    const link = node.children[0]
     const linkText =
       link.children.length === 1 && link.children[0].type === "text"
         ? link.children[0].value
@@ -55,7 +57,7 @@ module.exports = ({ markdownAST }) => {
       : `https://www.youtube.com/embed/${info.videoId}`
     const iframeHTML = `<iframe width="560" height="315" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
 
-    parent.children.splice(index, 1, {
+    node.children.splice(indexOfLink, 1, {
       type: "html",
       value: iframeHTML,
     })
