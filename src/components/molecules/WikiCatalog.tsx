@@ -30,15 +30,33 @@ const CatalogTable = styled.table`
   td {
     padding: 0;
     width: 60%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
+`
+
+const HeadCellInner = styled.div`
+  display: flex;
+  align-items: baseline;
+`
+
+const HeadText = styled.span`
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+const DateText = styled.span`
+  flex: 0 0 auto;
+  margin-left: 0.5rem;
+  font-size: 0.7rem;
+  color: ${theme.colors.lowlight};
 `
 
 export default function WikiList(
   { items, fallback }: WikiListProps,
 ) {
+  const [now, setNow] = React.useState<number | null>(null)
+  React.useEffect(() => setNow(Date.now()), [])
   const hasItems = items.length > 0
   return (
     <Container>
@@ -50,7 +68,13 @@ export default function WikiList(
                 <Link href={item.path}>{item.title}</Link>
               </th>
               <td>
-                {item.head && <i><Small>{item.head}</Small></i>}
+                <HeadCellInner>
+                  <HeadText>
+                    {item.head && <i><Small>{item.head}</Small></i>}
+                  </HeadText>
+                  {item.lastModified &&
+                    <DateText>{formatModified(item.lastModified, now)}</DateText>}
+                </HeadCellInner>
               </td>
             </tr>
           ))}
@@ -61,7 +85,15 @@ export default function WikiList(
   )
 }
 
+function formatModified(date: Date, now: number | null) {
+  if (now !== null) {
+    const hours = Math.floor((now - date.getTime()) / 3600000)
+    if (hours >= 0 && hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`
+  }
+  return date.toLocaleDateString()
+}
+
 interface WikiListProps {
-  items: { title: string; path: string; head?: string }[]
+  items: { title: string; path: string; head?: string; lastModified?: Date }[]
   fallback?: string
 }
