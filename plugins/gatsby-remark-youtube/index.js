@@ -35,7 +35,7 @@ function extractYouTubeInfo(url) {
 }
 
 module.exports = ({ markdownAST }) => {
-  visit(markdownAST, "paragraph", (node, index, parent) => {
+  visit(markdownAST, "paragraph", (node, _index, _parent) => {
     const indexOfLink = node.children.findIndex((child) => child.type === "link")
     const link = node.children[indexOfLink]
 
