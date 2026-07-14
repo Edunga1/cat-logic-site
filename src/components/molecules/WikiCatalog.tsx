@@ -8,10 +8,28 @@ import theme from "../../constants/theme"
 const Container = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
 
   a {
     color: ${theme.colors.link};
   }
+`
+
+const Group = styled.section`
+  & + & {
+    margin-top: 1.75rem;
+  }
+`
+
+const GroupHeader = styled.h2`
+  width: 40%;
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  color: ${theme.colors.lowlight};
 `
 
 const CatalogTable = styled.table`
@@ -30,26 +48,10 @@ const CatalogTable = styled.table`
   td {
     padding: 0;
     width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-`
-
-const HeadCellInner = styled.div`
-  display: flex;
-  align-items: baseline;
-`
-
-const HeadText = styled.span`
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
-
-const DateText = styled.span`
-  flex: 0 0 auto;
-  margin-left: 0.5rem;
-  font-size: 0.7rem;
-  color: ${theme.colors.lowlight};
 `
 
 export default function WikiList(
@@ -57,43 +59,97 @@ export default function WikiList(
 ) {
   const [now, setNow] = React.useState<number | null>(null)
   React.useEffect(() => setNow(Date.now()), [])
-  const hasItems = items.length > 0
+
+  if (items.length === 0) {
+    return <Container><ColorfulParagraph>{fallback}</ColorfulParagraph></Container>
+  }
+
   return (
     <Container>
-      {hasItems
-        ? <CatalogTable>
-          {items.map((item, i) => (
-            <tr key={i}>
-              <th>
-                <Link href={item.path}>{item.title}</Link>
-              </th>
-              <td>
-                <HeadCellInner>
-                  <HeadText>
+      {groupItems(items, now).map(group => (
+        <Group key={group.key}>
+          {group.label && <GroupHeader>{group.label}</GroupHeader>}
+          <CatalogTable>
+            <tbody>
+              {group.items.map((item, i) => (
+                <tr key={i}>
+                  <th>
+                    <Link href={item.path}>{item.title}</Link>
+                  </th>
+                  <td>
                     {item.head && <i><Small>{item.head}</Small></i>}
-                  </HeadText>
-                  {item.lastModified &&
-                    <DateText>{formatModified(item.lastModified, now)}</DateText>}
-                </HeadCellInner>
-              </td>
-            </tr>
-          ))}
-        </CatalogTable>
-        : <ColorfulParagraph>{fallback}</ColorfulParagraph>
-      }
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </CatalogTable>
+        </Group>
+      ))}
     </Container>
   )
 }
 
-function formatModified(date: Date, now: number | null) {
-  if (now !== null) {
-    const hours = Math.floor((now - date.getTime()) / 3600000)
-    if (hours >= 0 && hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`
+const DAY = 86400000
+
+function startOfDay(ts: number) {
+  const d = new Date(ts)
+  d.setHours(0, 0, 0, 0)
+  return d.getTime()
+}
+
+function dayLabel(dayStart: number, today: number) {
+  if (dayStart === today) return "Today"
+  if (dayStart === today - DAY) return "Yesterday"
+  const d = new Date(dayStart)
+  const pad = (n: number) => String(n).padStart(2, "0")
+  return `${d.getFullYear()}. ${pad(d.getMonth() + 1)}. ${pad(d.getDate())}`
+}
+
+function groupItems(items: WikiItem[], now: number | null): Group[] {
+  if (now === null) {
+    return [{ key: "all", label: null, items }]
   }
-  return date.toLocaleDateString()
+
+  const today = startOfDay(now)
+  const weekAgo = today - 6 * DAY
+  const groups: Group[] = []
+  const older: WikiItem[] = []
+  let currentDay: number | null = null
+
+  for (const item of items) {
+    const modified = item.lastModified?.getTime()
+    if (modified === undefined || modified < weekAgo) {
+      older.push(item)
+      continue
+    }
+    const day = startOfDay(modified)
+    if (day !== currentDay) {
+      currentDay = day
+      groups.push({ key: `d${day}`, label: dayLabel(day, today), items: [] })
+    }
+    groups[groups.length - 1].items.push(item)
+  }
+
+  if (older.length > 0) {
+    groups.push({ key: "earlier", label: groups.length > 0 ? "Earlier" : null, items: older })
+  }
+  return groups
+}
+
+interface WikiItem {
+  title: string
+  path: string
+  head?: string
+  lastModified?: Date
+}
+
+interface Group {
+  key: string
+  label: string | null
+  items: WikiItem[]
 }
 
 interface WikiListProps {
-  items: { title: string; path: string; head?: string; lastModified?: Date }[]
+  items: WikiItem[]
   fallback?: string
 }
