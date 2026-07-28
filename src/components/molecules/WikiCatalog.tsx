@@ -97,14 +97,6 @@ function startOfDay(ts: number) {
   return d.getTime()
 }
 
-function dayLabel(dayStart: number, today: number) {
-  if (dayStart === today) return "Today"
-  if (dayStart === today - DAY) return "Yesterday"
-  const d = new Date(dayStart)
-  const pad = (n: number) => String(n).padStart(2, "0")
-  return `${d.getFullYear()}. ${pad(d.getMonth() + 1)}. ${pad(d.getDate())}`
-}
-
 function groupItems(items: WikiItem[], now: number | null): Group[] {
   if (now === null) {
     return [{ key: "all", label: null, items }]
@@ -112,26 +104,28 @@ function groupItems(items: WikiItem[], now: number | null): Group[] {
 
   const today = startOfDay(now)
   const weekAgo = today - 6 * DAY
-  const groups: Group[] = []
-  const older: WikiItem[] = []
-  let currentDay: number | null = null
+  const buckets: Record<string, WikiItem[]> = { today: [], week: [], earlier: [] }
 
   for (const item of items) {
     const modified = item.lastModified?.getTime()
     if (modified === undefined || modified < weekAgo) {
-      older.push(item)
-      continue
+      buckets.earlier.push(item)
+    } else if (modified >= today) {
+      buckets.today.push(item)
+    } else {
+      buckets.week.push(item)
     }
-    const day = startOfDay(modified)
-    if (day !== currentDay) {
-      currentDay = day
-      groups.push({ key: `d${day}`, label: dayLabel(day, today), items: [] })
-    }
-    groups[groups.length - 1].items.push(item)
   }
 
-  if (older.length > 0) {
-    groups.push({ key: "earlier", label: groups.length > 0 ? "Earlier" : null, items: older })
+  const groups: Group[] = []
+  if (buckets.today.length > 0) {
+    groups.push({ key: "today", label: "Today", items: buckets.today })
+  }
+  if (buckets.week.length > 0) {
+    groups.push({ key: "week", label: "This week", items: buckets.week })
+  }
+  if (buckets.earlier.length > 0) {
+    groups.push({ key: "earlier", label: groups.length > 0 ? "Earlier" : null, items: buckets.earlier })
   }
   return groups
 }
