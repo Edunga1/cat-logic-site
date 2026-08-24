@@ -9,7 +9,6 @@ const Container = styled.div`
   color: ${theme.colors.foreground};
   padding: 2rem 2.5rem;
   margin-top: 1rem;
-  border-radius: 0.75rem;
   box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.14), 0 1px 1px rgba(0, 0, 0, 0.24);
 
   // heading style
