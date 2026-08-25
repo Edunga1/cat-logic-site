@@ -60,13 +60,19 @@ export default function WikiList(
   const [now, setNow] = React.useState<number | null>(null)
   React.useEffect(() => setNow(Date.now()), [])
 
-  if (items.length === 0) {
+  return <GroupedWikiCatalog groups={groupItems(items, now)} fallback={fallback} />
+}
+
+export function GroupedWikiCatalog(
+  { groups, fallback }: GroupedWikiCatalogProps,
+) {
+  if (groups.every(group => group.items.length === 0)) {
     return <Container><ColorfulParagraph>{fallback}</ColorfulParagraph></Container>
   }
 
   return (
     <Container>
-      {groupItems(items, now).map(group => (
+      {groups.map(group => (
         <Group key={group.key}>
           {group.label && <GroupHeader>{group.label}</GroupHeader>}
           <CatalogTable>
@@ -137,13 +143,18 @@ interface WikiItem {
   lastModified?: Date
 }
 
-interface Group {
+export interface Group {
   key: string
-  label: string | null
+  label: React.ReactNode
   items: WikiItem[]
 }
 
 interface WikiListProps {
   items: WikiItem[]
+  fallback?: string
+}
+
+interface GroupedWikiCatalogProps {
+  groups: Group[]
   fallback?: string
 }
