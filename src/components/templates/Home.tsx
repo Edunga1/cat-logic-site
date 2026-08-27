@@ -83,8 +83,7 @@ function Overview({ items }: { items: Wiki[] }) {
   const [picks, reroll] = useRandomPicks(items)
   return (
     <Sections>
-      <Details>
-        <span>Timeline</span>
+      <LabeledDetails label="Timeline">
         <TimelineSections>
           <WikiCatalog items={items.slice(0, RECENT_COUNT)} />
           {created.length > 0 && (
@@ -100,12 +99,20 @@ function Overview({ items }: { items: Wiki[] }) {
             />
           )}
         </TimelineSections>
-      </Details>
-      <Details>
-        <span>Index</span>
+      </LabeledDetails>
+      <LabeledDetails label="Index">
         <WikiIndex items={items} />
-      </Details>
+      </LabeledDetails>
     </Sections>
+  )
+}
+
+function LabeledDetails({ label, children }: { label: string; children: React.ReactElement }) {
+  return (
+    <Details>
+      <span>{label}</span>
+      <>{children}</>
+    </Details>
   )
 }
 
