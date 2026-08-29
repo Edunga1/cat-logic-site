@@ -110,7 +110,7 @@ function Overview({ items }: { items: Wiki[] }) {
 function LabeledDetails({ label, children }: { label: string; children: React.ReactElement }) {
   return (
     <Details>
-      <span>{label}</span>
+      <span style={{marginLeft: "20%"}}>{label}</span>
       <>{children}</>
     </Details>
   )

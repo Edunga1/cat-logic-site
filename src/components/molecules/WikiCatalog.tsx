@@ -79,7 +79,7 @@ export function GroupedWikiCatalog(
             <tbody>
               {group.items.map((item, i) => (
                 <tr key={i}>
-                  <th>
+                  <th style={{ fontWeight: "normal" }}>
                     <Link href={item.path}>{item.title}</Link>
                   </th>
                   <td>
