@@ -141,9 +141,9 @@ try:
     if selected_count > 0:
         st.divider()
 
-        has_api_key = os.environ.get("AZURE_OPENAI_API_KEY") is not None
+        has_api_key = os.environ.get("GEMINI_API_KEY") is not None
         if not has_api_key:
-            st.warning("AZURE_OPENAI_API_KEY 환경변수가 설정되지 않았습니다.")
+            st.warning("GEMINI_API_KEY 환경변수가 설정되지 않았습니다.")
 
         if st.button(
             f"선택한 문서 갱신 ({selected_count}개)",

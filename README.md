@@ -10,7 +10,7 @@ To get the similiarity result between documents, there are two steps.
 
 ```bash
 cp -r ../docs/wiki target
-AZURE_OPENAI_API_KEY=your-api-key uv run src/get_embeddings.py target
+GEMINI_API_KEY=your-api-key uv run src/get_embeddings.py target
 ```
 
 this will generate `output_embeddings.csv` that contains the embeddings of the documents.
@@ -36,8 +36,8 @@ Get the embeddings and calculate the similarity:
 
 ```bash
 cp -r ../docs/wiki target
-export AZURE_OPENAI_API_KEY=your-api-key
-docker run --rm -t -i -v `pwd`:/app -e AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KEY embeddings uv run src/get_embeddings.py target
+export GEMINI_API_KEY=your-api-key
+docker run --rm -t -i -v `pwd`:/app -e GEMINI_API_KEY=$GEMINI_API_KEY embeddings uv run src/get_embeddings.py target
 ```
 
 Convert the embeddings to similarity result. this will generate `similarity-result.json`.:

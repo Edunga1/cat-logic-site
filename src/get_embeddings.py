@@ -9,21 +9,32 @@ import sys
 from time import sleep
 
 import pandas as pd
-import tiktoken
-from phi.embedder.azure_openai import AzureOpenAIEmbedder
+import tiktoken  # TODO: Replace this with appropriate tokenizer for Gemini embeddings
+from google import genai
 
 
 logging.basicConfig(level=logging.INFO)
 
-# ref. https://cookbook.openai.com/examples/get_embeddings_from_dataset
-embedding_base_url = 'https://models.inference.ai.azure.com'
-embedding_model = 'text-embedding-3-large'
-embedding_encoding = 'cl100k_base'  # this the encoding for text-embedding-ada-002
-max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
+embedding_encoding = 'cl100k_base'
+max_tokens = 8000  # gemini-embedding-2 maximum tokens is 8192
+
+gemini_embedding_model = 'gemini-embedding-2'
 
 
-def get_azure_api_key():
-  return os.environ['AZURE_OPENAI_API_KEY']
+def get_gemini_api_key():
+  return os.environ['GEMINI_API_KEY']
+
+
+class GeminiEmbedder:
+  def __init__(self, model, api_key):
+    self.model = model
+    self.client = genai.Client(api_key=api_key)
+
+  def get_embedding(self, text):
+    # gemini-embedding-2 uses task: https://ai.google.dev/gemini-api/docs/embeddings#task-types
+    contents = f'task: sentence similarity | query: {text}'
+    result = self.client.models.embed_content(model=self.model, contents=contents)
+    return result.embeddings[0].values
 
 
 def read_docs(directory):
@@ -58,16 +69,12 @@ def update_token(df):
 
 def get_embeddings(df):
   df = df.copy()
-  embedder = AzureOpenAIEmbedder(
-    azure_endpoint=embedding_base_url,
-    model=embedding_model,
-    api_key=get_azure_api_key(),
-  )
+  embedder = GeminiEmbedder(gemini_embedding_model, get_gemini_api_key())
 
   def process(x):
     try:
       embedding = embedder.get_embedding(x)
-      sleep(5)  # to avoid rate limiting. based on GitHub Models Free Tier
+      sleep(5)  # to avoid rate limiting. based on Gemini API Free Tier
     except Exception as e:
       print(e)
       embedding = None
@@ -83,7 +90,10 @@ def save_sqlite(df, filename):
 
 def load_embeddings(filename):
   conn = sqlite3.connect(filename)
-  df = pd.read_sql('SELECT * FROM docs', conn)
+  try:
+    df = pd.read_sql('SELECT * FROM docs', conn)
+  except pd.errors.DatabaseError:
+    return pd.DataFrame([], columns=['filename', 'text', 'checksum', 'embedding'])
   df['embedding'] = df['embedding'].apply(ast.literal_eval)
   return df
 
