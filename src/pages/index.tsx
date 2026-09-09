@@ -92,7 +92,6 @@ function parseWikiItems(nodes: Queries.IndexPageQuery["allFile"]["nodes"]): Wiki
         path: createWikiLink(childMarkdownRemark?.fields?.slug ?? ""),
         title: childMarkdownRemark?.headings?.at(0)?.value ?? "(Untitled)",
         head: childMarkdownRemark?.fields?.head ?? "",
-        created,
         lastModified: lastModified ?? created,
       }
     })

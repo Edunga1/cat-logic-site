@@ -3,12 +3,12 @@ import styled from "styled-components"
 import Details from "../atoms/Details"
 import HomeLogo from "../atoms/HomeLogo"
 import SearchBox from "../molecules/SearchBox"
-import WikiCatalog, { GroupedWikiCatalog } from "../molecules/WikiCatalog"
+import WikiCatalog from "../molecules/WikiCatalog"
 import WikiIndex from "../molecules/WikiIndex"
 import PageLayout from "./layout/PageLayout"
+import theme from "../../constants/theme"
 
 const RECENT_COUNT = 10
-const NEW_COUNT = 5
 const RANDOM_COUNT = 3
 
 const Counter = styled.div`
@@ -40,6 +40,17 @@ const TimelineSections = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
+`
+
+const SectionHeader = styled.h2`
+  width: 40%;
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  color: ${theme.colors.lowlight};
 `
 
 const RerollButton = styled.button`
@@ -79,24 +90,22 @@ export default function Home({
 }
 
 function Overview({ items }: { items: Wiki[] }) {
-  const created = newlyCreated(items)
   const [picks, reroll] = useRandomPicks(items)
   return (
     <Sections>
       <LabeledDetails label="Timeline">
         <TimelineSections>
-          <WikiCatalog items={items.slice(0, RECENT_COUNT)} />
-          {created.length > 0 && (
-            <GroupedWikiCatalog groups={[{ key: "new", label: "New", items: created }]} />
-          )}
+          <section>
+            <SectionHeader>Recent</SectionHeader>
+            <WikiCatalog items={items.slice(0, RECENT_COUNT)} />
+          </section>
           {picks.length > 0 && (
-            <GroupedWikiCatalog
-              groups={[{
-                key: "random",
-                label: <>Random <RerollButton onClick={reroll} aria-label="pick again">↻</RerollButton></>,
-                items: picks,
-              }]}
-            />
+            <section>
+              <SectionHeader>
+                Random <RerollButton onClick={reroll} aria-label="pick again">↻</RerollButton>
+              </SectionHeader>
+              <WikiCatalog items={picks} />
+            </section>
           )}
         </TimelineSections>
       </LabeledDetails>
@@ -114,13 +123,6 @@ function LabeledDetails({ label, children }: { label: string; children: React.Re
       <>{children}</>
     </Details>
   )
-}
-
-function newlyCreated(items: Wiki[]): Wiki[] {
-  return items
-    .filter(it => it.created)
-    .sort((a, b) => (b.created?.getTime() ?? 0) - (a.created?.getTime() ?? 0))
-    .slice(0, NEW_COUNT)
 }
 
 function useRandomPicks(items: Wiki[]): [Wiki[], () => void] {
@@ -141,6 +143,5 @@ export type Wiki = {
   path: string;
   title: string;
   head: string;
-  created?: Date;
   lastModified?: Date;
 };
