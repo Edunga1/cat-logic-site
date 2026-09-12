@@ -1,6 +1,5 @@
 import * as React from "react"
 import styled from "styled-components"
-import Details from "../atoms/Details"
 import HomeLogo from "../atoms/HomeLogo"
 import SearchBox from "../molecules/SearchBox"
 import WikiCatalog from "../molecules/WikiCatalog"
@@ -34,6 +33,14 @@ const Sections = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+`
+
+const Card = styled.section`
+  background-color: #fff;
+  box-shadow:
+    0 0 0.5px rgba(0, 0, 0, 0.14),
+    0 1px 1px rgba(0, 0, 0, 0.24);
+  padding: 1rem;
 `
 
 const TimelineSections = styled.div`
@@ -93,7 +100,7 @@ function Overview({ items }: { items: Wiki[] }) {
   const [picks, reroll] = useRandomPicks(items)
   return (
     <Sections>
-      <LabeledDetails label="Timeline">
+      <Card>
         <TimelineSections>
           <section>
             <SectionHeader>Recent</SectionHeader>
@@ -108,20 +115,11 @@ function Overview({ items }: { items: Wiki[] }) {
             </section>
           )}
         </TimelineSections>
-      </LabeledDetails>
-      <LabeledDetails label="Index">
+      </Card>
+      <Card>
         <WikiIndex items={items} />
-      </LabeledDetails>
+      </Card>
     </Sections>
-  )
-}
-
-function LabeledDetails({ label, children }: { label: string; children: React.ReactElement }) {
-  return (
-    <Details>
-      <span style={{marginLeft: "20%"}}>{label}</span>
-      <>{children}</>
-    </Details>
   )
 }
 
