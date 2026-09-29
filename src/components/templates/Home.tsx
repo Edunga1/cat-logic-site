@@ -3,12 +3,7 @@ import styled from "styled-components"
 import HomeLogo from "../atoms/HomeLogo"
 import SearchBox from "../molecules/SearchBox"
 import WikiCatalog from "../molecules/WikiCatalog"
-import WikiIndex from "../molecules/WikiIndex"
 import PageLayout from "./layout/PageLayout"
-import theme from "../../constants/theme"
-
-const RECENT_COUNT = 10
-const RANDOM_COUNT = 3
 
 const Counter = styled.div`
   font-size: 0.8rem;
@@ -29,53 +24,11 @@ const SearchBoxContainer = styled.div`
   }
 `
 
-const Sections = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`
-
-const Card = styled.section`
-  background-color: #fff;
-  box-shadow:
-    0 0 0.5px rgba(0, 0, 0, 0.14),
-    0 1px 1px rgba(0, 0, 0, 0.24);
-  padding: 1rem;
-`
-
-const TimelineSections = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-`
-
-const SectionHeader = styled.h2`
-  width: 40%;
-  margin: 0 0 0.4rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: right;
-  color: ${theme.colors.lowlight};
-`
-
-const RerollButton = styled.button`
-  border: none;
-  padding: 0;
-  background: none;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-`
-
 export default function Home({
   items,
-  searching,
   setQuery,
 }: {
   items: Wiki[];
-  searching: boolean;
   setQuery: (arg0: string) => void;
 }) {
   return (
@@ -88,53 +41,10 @@ export default function Home({
             <Counter>{items.length} docs</Counter>
           </div>
         </SearchBoxContainer>
-        {searching
-          ? <WikiCatalog items={items} fallback="No results found :(" />
-          : <Overview items={items} />}
+        <WikiCatalog items={items} fallback="No results found :(" />
       </div>
     </PageLayout>
   )
-}
-
-function Overview({ items }: { items: Wiki[] }) {
-  const [picks, reroll] = useRandomPicks(items)
-  return (
-    <Sections>
-      <Card>
-        <TimelineSections>
-          <section>
-            <SectionHeader>Recent</SectionHeader>
-            <WikiCatalog items={items.slice(0, RECENT_COUNT)} />
-          </section>
-          {picks.length > 0 && (
-            <section>
-              <SectionHeader>
-                Random <RerollButton onClick={reroll} aria-label="pick again">↻</RerollButton>
-              </SectionHeader>
-              <WikiCatalog items={picks} />
-            </section>
-          )}
-        </TimelineSections>
-      </Card>
-      <Card>
-        <WikiIndex items={items} />
-      </Card>
-    </Sections>
-  )
-}
-
-function useRandomPicks(items: Wiki[]): [Wiki[], () => void] {
-  const [picks, setPicks] = React.useState<Wiki[]>([])
-  const reroll = React.useCallback(() => {
-    const pool = items.concat()
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[pool[i], pool[j]] = [pool[j], pool[i]]
-    }
-    setPicks(pool.slice(0, RANDOM_COUNT))
-  }, [items])
-  React.useEffect(() => reroll(), [reroll])
-  return [picks, reroll]
 }
 
 export type Wiki = {

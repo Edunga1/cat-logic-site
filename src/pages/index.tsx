@@ -24,7 +24,6 @@ export default function IndexPage(
   return (
     <Home
       items={items}
-      searching={Boolean(query)}
       setQuery={setQuery}
     />
   )
