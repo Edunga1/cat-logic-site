@@ -1,12 +1,30 @@
 import * as React from "react"
 import styled from "styled-components"
+import { Link as GatsbyLink } from "gatsby"
+import theme from "../../constants/theme"
 import HomeLogo from "../atoms/HomeLogo"
 import SearchBox from "../molecules/SearchBox"
 import WikiCatalog from "../molecules/WikiCatalog"
 import PageLayout from "./layout/PageLayout"
 
-const Counter = styled.div`
+const Meta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   font-size: 0.8rem;
+`
+
+const GraphButton = styled(GatsbyLink)`
+  padding: 0.1rem 0.75rem;
+  border: 1px solid ${theme.colors.backgroundHighlight};
+  border-radius: 999px;
+  color: ${theme.colors.link};
+  text-decoration: none;
+
+  &:hover {
+    border-color: ${theme.colors.highlight};
+    color: ${theme.colors.highlight};
+  }
 `
 
 const SearchBoxContainer = styled.div`
@@ -38,7 +56,10 @@ export default function Home({
         <SearchBoxContainer>
           <div>
             <SearchBox onChange={setQuery} holder=">" />
-            <Counter>{items.length} docs</Counter>
+            <Meta>
+              <span>{items.length} docs</span>
+              <GraphButton to="/graph/">graph</GraphButton>
+            </Meta>
           </div>
         </SearchBoxContainer>
         <WikiCatalog items={items} fallback="No results found :(" />

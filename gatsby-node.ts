@@ -2,6 +2,8 @@ import { GatsbyNode, Node } from "gatsby"
 import { createFilePath } from "gatsby-source-filesystem"
 import path from "path"
 import getRelatedDocs from "./src/related-docs/RelatedDocs"
+import { buildDocGraph } from "./src/related-docs/graph"
+import similarity from "./src/related-docs/similarity-result.json"
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
   node,
@@ -29,12 +31,46 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
   }
 }
 
+export const sourceNodes: GatsbyNode["sourceNodes"] = ({
+  actions: { createNode },
+  createNodeId,
+  createContentDigest,
+}) => {
+  const graph = buildDocGraph(similarity)
+  createNode({
+    ...graph,
+    id: createNodeId("doc-graph"),
+    internal: {
+      type: "DocGraph",
+      contentDigest: createContentDigest(graph),
+    },
+  })
+}
+
 export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] =
   ({ actions: { createTypes } }) => {
     createTypes(
       `
       type MarkdownRemark implements Node {
         fields: Fields
+      }
+      type DocGraphNode {
+        id: String!
+        x: Float!
+        y: Float!
+        degree: Int!
+        community: Int!
+      }
+      type DocGraphEdge {
+        source: String!
+        target: String!
+        similarity: Float!
+      }
+      type DocGraph implements Node {
+        width: Int!
+        height: Int!
+        nodes: [DocGraphNode!]!
+        edges: [DocGraphEdge!]!
       }
       type Doc {
         slug: String!
