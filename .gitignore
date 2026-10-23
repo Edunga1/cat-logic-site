@@ -6,4 +6,4 @@ __pycache__/
 *.csv
 
 # embedding target
-target/
+target
