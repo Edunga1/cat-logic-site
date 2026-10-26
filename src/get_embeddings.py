@@ -148,11 +148,22 @@ def main(docs_path, db_file='output_embeddings.db', output_file='output_embeddin
   logging.info(f'Updated docs: {df_updated_docs.shape[0]}')
   df_updated_docs = get_embeddings(df_updated_docs)
 
-  if df_updated_docs.shape[0] == 0:
+  df_failed = df_updated_docs[df_updated_docs['embedding'].isnull()]
+  if df_failed.shape[0] > 0:
+    logging.warning(f'Failed docs: {df_failed["filename"].tolist()}')
+  df_updated_docs = df_updated_docs.drop(df_failed.index)
+
+  df = merge_docs(df, df_updated_docs)
+
+  df_deleted = df[~df['filename'].isin(df_docs['filename'])]
+  if df_updated_docs.shape[0] == 0 and df_deleted.shape[0] == 0:
     logging.info('No updated documents found.')
     return
 
-  df = merge_docs(df, df_updated_docs)
+  if df_deleted.shape[0] > 0:
+    logging.info(f'Deleted docs: {df_deleted["filename"].tolist()}')
+    df = df.drop(df_deleted.index)
+
   persist_embeddings(df, output_file)
 
   logging.info(df)
