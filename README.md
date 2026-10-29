@@ -13,12 +13,12 @@ cp -r ../docs/wiki target
 GEMINI_API_KEY=your-api-key uv run src/get_embeddings.py target
 ```
 
-this will generate `output_embeddings.csv` that contains the embeddings of the documents.
+this will generate `output_embeddings.db` that contains the embeddings of the documents.
 
 2. Calculate the similarity
 
 ```bash
-uv run src/cosine_similarity.py output_embeddings.csv
+uv run src/cosine_similarity.py output_embeddings.db
 ```
 
 this will generate `similarity-result.json`.
@@ -43,5 +43,5 @@ docker run --rm -t -i -v `pwd`:/app -e GEMINI_API_KEY=$GEMINI_API_KEY embeddings
 Convert the embeddings to similarity result. this will generate `similarity-result.json`.:
 
 ```bash
-docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py output_embeddings.csv
+docker run --rm -t -i -v `pwd`:/app embeddings uv run src/cosine_similarity.py output_embeddings.db
 ```

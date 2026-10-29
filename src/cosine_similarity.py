@@ -2,6 +2,8 @@ import sys
 import pandas as pd
 import numpy as np
 
+from get_embeddings import load_embeddings
+
 
 def cosine_similarity(a, b):
   return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
@@ -13,11 +15,10 @@ def save_df_to_json(df, filename):
 
 if __name__ == '__main__':
   """
-  $ python src/cosine_similarity.py data.csv
+  $ python src/cosine_similarity.py output_embeddings.db
   """
-  df = pd.read_csv(sys.argv[1])
+  df = load_embeddings(sys.argv[1])
   df = df[['filename', 'embedding']]
-  df['embedding'] = df['embedding'].apply(lambda x: eval(x))
   df = df.merge(df, how='cross')
   df['similarity'] = df.apply(lambda x: cosine_similarity(x['embedding_x'], x['embedding_y']), axis=1)
   df_result = df[['filename_x', 'filename_y', 'similarity']]

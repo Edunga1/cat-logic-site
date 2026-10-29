@@ -99,8 +99,6 @@ def load_embeddings(filename):
 
 
 def persist_embeddings(df, filename):
-  df.to_csv(f'{filename}.csv')
-
   # TODO: Raise an error on object types
   df['embedding'] = df['embedding'].apply(lambda x: json.dumps(x) if x else None)
   save_sqlite(df, f'{filename}.db')
