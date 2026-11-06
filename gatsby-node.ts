@@ -134,6 +134,7 @@ function getHead(node: Node) {
 
 function stripMarkdown(text: string): string {
   return text
+    .replace(/^>\s*/, "")                    // > quote -> quote
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // [link](url) -> link
     .replace(/`([^`]+)`/g, "$1")             // `code` -> code
     .replace(/\*\*([^*]+)\*\*/g, "$1")       // **bold** -> bold
