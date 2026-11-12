@@ -25,6 +25,7 @@ const Main = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
+  align-items: baseline;
   margin: 1rem 0;
   gap: 0.5rem;
 `
