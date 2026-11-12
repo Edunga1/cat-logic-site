@@ -14,6 +14,8 @@ export default function BlogPostTemplate(
   } = data.file?.childMarkdownRemark ?? {}
   const commitLogs = data.file?.fields?.gitLogs || []
   const { hash: gitLogLatestHash, date: gitLogLatestDate } = commitLogs[0] || {}
+  const createdDate = data.file?.childMarkdownRemark?.frontmatter?.created
+  const created = createdDate ? new Date(`${createdDate}T00:00:00+09:00`) : undefined
   const docTitle = extractDocTitle(data)
   const relatedDocs = extractRelatedDocs(data)
   const relatedLinks = relatedDocs.map(doc => {
@@ -27,6 +29,7 @@ export default function BlogPostTemplate(
       tableOfContents={tableOfContents || ""}
       relatedLinks={relatedLinks}
       wikiContents={removeFirstHeading(html || "")}
+      created={created}
       lastModified={gitLogLatestDate ? new Date(gitLogLatestDate) : undefined}
       lastCommitHash={gitLogLatestHash || undefined}
       gitHubRepositoryUrl={gitHubRepositoryUrl}
@@ -46,6 +49,9 @@ export const pageQuery = graphql`
       childMarkdownRemark {
         headings(depth: h1) {
           value
+        }
+        frontmatter {
+          created(formatString: "YYYY-MM-DD")
         }
         fields {
           slug

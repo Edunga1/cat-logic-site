@@ -36,9 +36,22 @@ const Title = styled.h1`
   color: ${theme.colors.foreground};
 `
 
-const TitleBottom = styled.div`
-  display: flex;
-  justify-content: flex-end;
+const TitleBottom = styled.dl`
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 0.25rem;
+  justify-content: end;
+  margin: 0;
+  font-size: .7rem;
+  color: ${theme.colors.lowlight};
+
+  > dt {
+    text-align: right;
+  }
+
+  > dd {
+    margin: 0;
+  }
 `
 
 const TocMain = styled(Toc)`
@@ -63,6 +76,7 @@ export default function Wiki({
   tableOfContents,
   relatedLinks,
   wikiContents,
+  created,
   lastModified,
   lastCommitHash,
   gitHubRepositoryUrl,
@@ -71,6 +85,7 @@ export default function Wiki({
   tableOfContents: string;
   relatedLinks: JSX.Element[];
   wikiContents: string;
+  created?: Date;
   lastModified?: Date;
   lastCommitHash?: string;
   gitHubRepositoryUrl?: string;
@@ -94,7 +109,20 @@ export default function Wiki({
               <Title>{title}</Title>
             </Link>
           </TitleContainer>
-          <TitleBottom>{githubLink}</TitleBottom>
+          <TitleBottom>
+            {created && (
+              <>
+                <dt>Created:</dt>
+                <dd>{created.toLocaleDateString()}</dd>
+              </>
+            )}
+            {githubLink && (
+              <>
+                <dt>Modified:</dt>
+                <dd>{githubLink}</dd>
+              </>
+            )}
+          </TitleBottom>
         </>
       }
     >
