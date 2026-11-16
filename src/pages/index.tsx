@@ -12,7 +12,7 @@ export default function IndexPage(
   const allItems = parseWikiItems(data.allFile.nodes)
   const [items, setItems] = React.useState(allItems)
   const [query, setQuery] = React.useState("")
-  const result = useGatsbyPluginFusejs(query, data.fusejs, { includeMatches: true })
+  const result = useGatsbyPluginFusejs(query, data.fusejs, { includeMatches: true, ignoreLocation: true, threshold: 0.3 })
 
   React.useEffect(() => {
     if (query) {
