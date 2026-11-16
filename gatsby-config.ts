@@ -41,7 +41,12 @@ const config: GatsbyConfig = {
           },
           "gatsby-remark-relative-linker",
           "gatsby-remark-youtube",
-          "gatsby-remark-prismjs",
+          {
+            resolve: "gatsby-remark-prismjs",
+            options: {
+              noInlineHighlight: true,
+            },
+          },
         ],
       },
     },
@@ -65,7 +70,7 @@ const config: GatsbyConfig = {
                     headings(depth: h1) {
                       value
                     }
-                    rawMarkdownBody
+                    excerpt(format: PLAIN, pruneLength: 1000000)
                     fields {
                       head
                       slug
@@ -76,13 +81,13 @@ const config: GatsbyConfig = {
             }
           }
         `,
-        keys: ["rawMarkdownBody", "name"],
+        keys: ["body", "name"],
         normalizer: ({ data }: { data: Queries.Query }) =>
           data.allFile.edges.map(({ node }) => ({
             name: node.name,
             slug: node.childMarkdownRemark?.fields?.slug,
             title: node.childMarkdownRemark?.headings?.[0]?.value,
-            rawMarkdownBody: node.childMarkdownRemark?.rawMarkdownBody,
+            body: node.childMarkdownRemark?.excerpt,
             head: node.childMarkdownRemark?.fields?.head,
           })),
       },

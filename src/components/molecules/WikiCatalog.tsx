@@ -4,6 +4,7 @@ import Link from "../atoms/Link"
 import ColorfulParagraph from "../atoms/ColorfulParagraph"
 import Small from "../atoms/Small"
 import theme from "../../constants/theme"
+import { Snippet } from "../../utils/search"
 
 const Container = styled.div`
   width: 100%;
@@ -52,7 +53,9 @@ export default function WikiList(
                   <Link href={item.path}>{item.title}</Link>
                 </th>
                 <td>
-                  {item.head && <i><Small>{item.head}</Small></i>}
+                  {item.snippet
+                    ? <Small>{item.snippet.before}<mark>{item.snippet.match}</mark>{item.snippet.after}</Small>
+                    : item.head && <i><Small>{item.head}</Small></i>}
                 </td>
               </tr>
             ))}
@@ -65,6 +68,6 @@ export default function WikiList(
 }
 
 interface WikiListProps {
-  items: { title: string; path: string; head?: string }[]
+  items: { title: string; path: string; head?: string; snippet?: Snippet }[]
   fallback?: string
 }

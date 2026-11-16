@@ -2,6 +2,7 @@ import * as React from "react"
 import { graphql, HeadFC, PageProps } from "gatsby"
 import "./global.css"
 import { createWikiLink } from "../utils/wiki"
+import { extractSnippet, SearchMatch } from "../utils/search"
 import { useGatsbyPluginFusejs } from "react-use-fusejs"
 import Home, { Wiki } from "../components/templates/Home"
 
@@ -11,7 +12,7 @@ export default function IndexPage(
   const allItems = parseWikiItems(data.allFile.nodes)
   const [items, setItems] = React.useState(allItems)
   const [query, setQuery] = React.useState("")
-  const result = useGatsbyPluginFusejs(query, data.fusejs)
+  const result = useGatsbyPluginFusejs(query, data.fusejs, { includeMatches: true })
 
   React.useEffect(() => {
     if (query) {
@@ -69,6 +70,7 @@ export const pageQuery = graphql`
 interface SearchResult {
   item: { name: string; slug: string; title: string; head: string }
   refIndex: number
+  matches?: SearchMatch[]
 }
 
 function mapSearchResultToWikiItem(result: SearchResult[]): Wiki[] {
@@ -77,6 +79,7 @@ function mapSearchResultToWikiItem(result: SearchResult[]): Wiki[] {
       path: createWikiLink(it.item.slug ?? it.item.name),
       title: it.item.title ?? "(Untitled)",
       head: it.item.head ?? "",
+      snippet: extractSnippet(it.matches, "body"),
     }))
 }
 

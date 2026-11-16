@@ -6,6 +6,7 @@ import HomeLogo from "../atoms/HomeLogo"
 import SearchBox from "../molecules/SearchBox"
 import WikiCatalog from "../molecules/WikiCatalog"
 import PageLayout from "./layout/PageLayout"
+import { Snippet } from "../../utils/search"
 
 const Meta = styled.div`
   display: flex;
@@ -72,5 +73,6 @@ export type Wiki = {
   path: string;
   title: string;
   head: string;
+  snippet?: Snippet;
   lastModified?: Date;
 };
